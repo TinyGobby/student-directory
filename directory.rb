@@ -18,8 +18,8 @@ def input_students
 end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "-------------"
+  puts "The Students of Villains Academy".center(80)
+  puts "-------------".center(80)
 end
 
 def print(students)
