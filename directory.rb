@@ -24,7 +24,7 @@ end
 
 def print(students,letter)
   students.each_with_index do |student, index|
-    if student[:name] =~ /^[Hh]/
+    if student[:name] =~ /^#{letter}/
       puts "#{index+1}: #{student[:name]} (#{student[:cohort]} cohort)"
     end
   end
@@ -37,5 +37,7 @@ end
 students = input_students
 
 print_header
-print(students)
+puts "Which letter of students would you like to print out?"
+letter = gets.chomp
+print(students, letter)
 print_footer(students)
