@@ -1,3 +1,22 @@
+def month
+  year = [:January, :February, :March, :April, :May, :June, :July, :August,:September, :October, :November, :December, :Future]
+
+  puts "What month cohort are they in?"
+
+  cohort = gets.chomp.capitalize.to_sym
+
+  if cohort.empty?
+    cohort = :Future
+  end
+
+  while !year.include?(cohort)
+    puts "Please try again, or type Future for future cohorts"
+    cohort = gets.chomp.capitalize.to_sym
+  end
+
+  return cohort
+end
+
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
@@ -8,10 +27,13 @@ def input_students
   # while the name is not empty, repeat this code
   while !name.empty? do
     # add the student hash to the array
-    students << {name: name, cohort: :november}
+    students << {name: name, cohort: month}
     puts "Now we have #{students.count} students"
     # now get another name from the user
     name = gets.chomp
+    if name.empty?
+      break
+    end
   end
   # return the array of students
   students
