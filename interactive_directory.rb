@@ -63,6 +63,14 @@ def show_students
   print_footer
 end
 
+def select_filename
+  puts "Which file would you like to load the list of students from?"
+  puts "Leave blank for the default (students.csv)"
+  puts "Options:"
+  puts Dir.entries("./directories/")
+  return standard_filename
+end
+
 def standard_filename
   filename = "./directories/" + STDIN.gets.chomp
   if filename == "./directories/"
@@ -74,32 +82,23 @@ end
 def save_students
   puts "Which file would you like to save to?"
   puts "Leave blank to save to default (students.csv)"
-  file = File.open(standard_filename, "w") # open the file for writing
-  # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  File.open(standard_filename, "w") do |file| # open the file for writing
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end
   end
-  file.close
   puts "Saved"
 end
 
-def select_filename
-  puts "Which file would you like to load the list of students from?"
-  puts "Leave blank for the default (students.csv)"
-  puts "Options:"
-  puts Dir.entries("./directories/")
-  return standard_filename
-end
-
 def load_students(filename = "./directories/students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym}
+  File.open(filename, "r") do |file|
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(",")
+      @students << {name: name, cohort: cohort.to_sym}
+    end
   end
-  file.close
   puts "Loaded #{@students.count} students from #{filename}"
 end
 
