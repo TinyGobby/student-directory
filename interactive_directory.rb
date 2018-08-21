@@ -7,10 +7,6 @@ def month
 
   cohort = gets.chomp.capitalize.to_sym
 
-  if cohort.empty?
-    cohort = :Future
-  end
-
   while !year.include?(cohort)
     puts "Please try again, or type Future for future cohorts"
     cohort = gets.chomp.capitalize.to_sym
@@ -27,9 +23,6 @@ def input_students
     @students << {name: name, cohort: month}
     puts "Now we have #{@students.count} students"
     name = gets.chomp
-    if name.empty?
-      break
-    end
   end
   @students
 end
@@ -49,13 +42,14 @@ end
 
 def print_footer
   if @students.count == 1
-    puts "Overall, we have 1 great student"
+    puts "Overall, we have 1 great student\n"
   else
-    puts "Overall, we have #{@students.count} great students"
+    puts "Overall, we have #{@students.count} great students\n"
   end
 end
 
 def print_menu
+  puts "Menu"
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
@@ -79,6 +73,7 @@ def save_students
     file.puts csv_line
   end
   file.close
+  puts "Saved to students.csv"
 end
 
 def load_students(filename = "students.csv")
@@ -88,6 +83,7 @@ def load_students(filename = "students.csv")
     @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
+  puts "Loaded #{@students.count} students from #{filename}"
 end
 
 def try_load_students
@@ -95,10 +91,9 @@ def try_load_students
   if filename.nil? # load students.csv if no other file provided
     filename = "students.csv"
   end
-  
+
   if File.exists?(filename)
     load_students(filename)
-    puts "Loaded #{@students.count} students from #{filename}"
   else # if it doesn't exist
     puts "Sorry, #{filename} doesn\'t exist"
     exit
@@ -116,6 +111,7 @@ def process(selection)
   when "4"
     load_students
   when "9"
+    puts "Goodbye"
     exit
   else
     puts "I don't know what you mean, try again"
