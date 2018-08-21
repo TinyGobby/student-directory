@@ -61,7 +61,10 @@ def print_footer(students)
 end
 
 students = input_students
-
+if students = []
+  break
+else
 print_header
 print(students)
 print_footer(students)
+end
