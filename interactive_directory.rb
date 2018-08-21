@@ -52,8 +52,8 @@ def print_menu
   puts "Menu"
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save list of students"
+  puts "4. Load list of students"
   puts "9. Exit"
 end
 
@@ -63,9 +63,18 @@ def show_students
   print_footer
 end
 
+def standard_filename
+  filename = "./directories/" + STDIN.gets.chomp
+  if filename == "./directories/"
+    filename = "./directories/students.csv"
+  end
+  return filename
+end
+
 def save_students
-  # open the file for writing
-  file = File.open("students.csv", "w")
+  puts "Which file would you like to save to?"
+  puts "Leave blank to save to default (students.csv)"
+  file = File.open(standard_filename, "w") # open the file for writing
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
@@ -73,10 +82,18 @@ def save_students
     file.puts csv_line
   end
   file.close
-  puts "Saved to students.csv"
+  puts "Saved"
 end
 
-def load_students(filename = "students.csv")
+def select_filename
+  puts "Which file would you like to load the list of students from?"
+  puts "Leave blank for the default (students.csv)"
+  puts "Options:"
+  puts Dir.entries("./directories/")
+  return standard_filename
+end
+
+def load_students(filename = "./directories/students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
@@ -89,9 +106,8 @@ end
 def try_load_students
   filename = ARGV.first # first argument from the command line
   if filename.nil? # load students.csv if no other file provided
-    filename = "students.csv"
+    filename = "./directories/students.csv"
   end
-
   if File.exists?(filename)
     load_students(filename)
   else # if it doesn't exist
@@ -109,7 +125,7 @@ def process(selection)
   when "3"
     save_students
   when "4"
-    load_students
+    load_students(select_filename)
   when "9"
     puts "Goodbye"
     exit
